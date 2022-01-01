@@ -29,9 +29,8 @@ func main() {
 	// for _, v := range todos {
 	// 	fmt.Println(v)
 	// }
-	todo, _ := models.GetTodo(1)
-	todo.Content = "Updated First Content"
-	todo.UpdateTodo()
+	todo, _ := models.GetTodo(3)
+	todo.DeleteTodo()
 	// fmt.Println(t)
 
 }
