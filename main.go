@@ -6,13 +6,6 @@ import (
 )
 
 func main() {
-	// fmt.Println(config.Config.Port)
-	// fmt.Println(config.Config.SQLDriver)
-	// fmt.Println(config.Config.DbName)
-	// fmt.Println(config.Config.LogFile)
-
-	// log.Println("test")
-
 	fmt.Println(models.Db)
 
 	// u := &models.User{
@@ -24,7 +17,7 @@ func main() {
 
 	// u.CreateUser()
 
-	u, _ := models.GetUser(1)
+	// u, _ := models.GetUser(1)
 
 	// fmt.Println(u)
 
@@ -33,8 +26,4 @@ func main() {
 	// u.UpdateUser()
 	// u, _ = models.GetUser(1)
 	// fmt.Println(u)
-
-	u.DeleteUser()
-	u, _ = models.GetUser(1)
-	fmt.Println(u)
 }
