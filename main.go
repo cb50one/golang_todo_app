@@ -15,7 +15,7 @@ func main() {
 	// }
 	// u.CreateUser()
 
-	user, _ := models.GetUser(2)
+	// user, _ := models.GetUser(2)
 
 	// u.Name = "test2"
 	// u.Email = "test2@example.com"
@@ -25,10 +25,13 @@ func main() {
 
 	// user2.CreateTodo("Third Todo")
 
-	todos, _ := user.GetTodosByUser()
+	// todos, _ := user.GetTodosByUser()
+	// for _, v := range todos {
+	// 	fmt.Println(v)
+	// }
+	todo, _ := models.GetTodo(1)
+	todo.Content = "Updated First Content"
+	todo.UpdateTodo()
 	// fmt.Println(t)
-	// todos, _ := models.GetTodos()
-	for _, v := range todos {
-		fmt.Println(v)
-	}
+
 }
