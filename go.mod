@@ -1,5 +1,6 @@
 module golang_todo_app
 
+// +heroku goVersion go1.17
 go 1.17
 
 require gopkg.in/go-ini/ini.v1 v1.66.2
