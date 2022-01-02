@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"time"
 )
@@ -105,6 +106,7 @@ func (session *Session) CheckSession() (valid bool, err error) {
 
 	err = Db.QueryRow(cmd, session.UUID).Scan(&session.ID, &session.UUID, &session.Email, &session.UserID, &session.CreatedAt)
 
+	fmt.Println(err)
 	if err != nil {
 		valid = false
 		return
@@ -112,5 +114,15 @@ func (session *Session) CheckSession() (valid bool, err error) {
 	if session.ID != 0 {
 		valid = true
 	}
+	fmt.Println(valid, err)
 	return valid, err
+}
+
+func (sess *Session) DeleteSessionByUUID() (err error) {
+	cmd := ` delete from sessions where uuid = ?`
+	_, err = Db.Exec(cmd, sess.UUID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
 }
