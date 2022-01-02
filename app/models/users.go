@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"log"
 	"time"
 )
@@ -13,6 +12,7 @@ type User struct {
 	Email      string
 	PassWord   string
 	Created_at time.Time
+	Todos      []Todo
 }
 
 type Session struct {
@@ -106,7 +106,6 @@ func (session *Session) CheckSession() (valid bool, err error) {
 
 	err = Db.QueryRow(cmd, session.UUID).Scan(&session.ID, &session.UUID, &session.Email, &session.UserID, &session.CreatedAt)
 
-	fmt.Println(err)
 	if err != nil {
 		valid = false
 		return
@@ -114,7 +113,6 @@ func (session *Session) CheckSession() (valid bool, err error) {
 	if session.ID != 0 {
 		valid = true
 	}
-	fmt.Println(valid, err)
 	return valid, err
 }
 
@@ -125,4 +123,18 @@ func (sess *Session) DeleteSessionByUUID() (err error) {
 		log.Fatalln(err)
 	}
 	return err
+}
+
+func (sess *Session) GetUserBySession() (user User, err error) {
+	user = User{}
+	cmd := `select id, uuid, name, email, created_at FROM users where id = ?`
+	err = Db.QueryRow(cmd, sess.UserID).Scan(
+		&user.ID,
+		&user.UUID,
+		&user.Name,
+		&user.Email,
+		&user.Created_at,
+	)
+
+	return user, err
 }
