@@ -6,55 +6,64 @@ import (
 	"fmt"
 	"golang_todo_app/config"
 	"log"
+	"os"
 
 	"github.com/google/uuid"
-
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/lib/pq"
 )
 
 var Db *sql.DB
 
 var err error
 
-const (
-	tableNameUser    = "users"
-	tableNameTodo    = "todos"
-	tableNameSession = "sessions"
-)
+// For sqlite3
+// const (
+// 	tableNameUser    = "users"
+// 	tableNameTodo    = "todos"
+// 	tableNameSession = "sessions"
+// )
 
 func init() {
-	Db, err = sql.Open(config.Config.SQLDriver, config.Config.DbName)
+	url := os.Getenv("DATABASE_URL")
+	connection, _ := pq.ParseURL(url)
+	connection += "sslmode=require"
+	Db, err = sql.Open(config.Config.SQLDriver, connection)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	cmdU := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		uuid STRING NOT NULL UNIQUE,
-		name STRING,
-		email STRING,
-		password STRING,
-		created_at DATETIME
-	)`, tableNameUser)
+	// Db, err = sql.Open(config.Config.SQLDriver, config.Config.DbName)
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
 
-	Db.Exec(cmdU)
+	// cmdU := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
+	// 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	// 	uuid STRING NOT NULL UNIQUE,
+	// 	name STRING,
+	// 	email STRING,
+	// 	password STRING,
+	// 	created_at DATETIME
+	// )`, tableNameUser)
 
-	cmdT := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		content TEXT,
-		user_id INTEGER,
-		created_at DATETIME
-	)`, tableNameTodo)
-	Db.Exec(cmdT)
+	// Db.Exec(cmdU)
 
-	cmdS := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		uuid STRING NOT NULL UNIQUE,
-		email STRING,
-		user_id INTEGER,
-		created_at DATETIME
-	)`, tableNameSession)
-	Db.Exec(cmdS)
+	// cmdT := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
+	// 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	// 	content TEXT,
+	// 	user_id INTEGER,
+	// 	created_at DATETIME
+	// )`, tableNameTodo)
+	// Db.Exec(cmdT)
+
+	// cmdS := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
+	// 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	// 	uuid STRING NOT NULL UNIQUE,
+	// 	email STRING,
+	// 	user_id INTEGER,
+	// 	created_at DATETIME
+	// )`, tableNameSession)
+	// Db.Exec(cmdS)
 }
 
 func createUUID() (uuidobj uuid.UUID) {

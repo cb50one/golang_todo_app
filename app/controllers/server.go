@@ -6,6 +6,7 @@ import (
 	"golang_todo_app/config"
 	"html/template"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 )
@@ -65,5 +66,10 @@ func StartMainServer() error {
 	http.HandleFunc("/todos/update/", parseURL(todoUpdate))
 	http.HandleFunc("/todos/delete/", parseURL(todoDelete))
 	http.HandleFunc("/", top)
-	return http.ListenAndServe(":"+config.Config.Port, nil)
+
+	port := os.Getenv("PORT")
+	return http.ListenAndServe(":"+port, nil)
+
+	// For sqlite
+	// return http.ListenAndServe(":"+config.Config.Port, nil)
 }
