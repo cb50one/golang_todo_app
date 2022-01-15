@@ -28,6 +28,8 @@ func signup(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 		}
 
+		authenticate(w, r)
+
 		http.Redirect(w, r, "/", 302)
 	}
 }
